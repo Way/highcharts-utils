@@ -1,4 +1,4 @@
 highcharts-utils
 ================
 
-Some utilities and helper function for Highcharts
+Some utilities and helper functions for [Highcharts](http://www.highcharts.com/)
