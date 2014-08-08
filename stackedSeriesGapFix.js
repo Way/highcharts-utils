@@ -1,21 +1,23 @@
-/**
- * Fix chart series gaps for stacked series by adding a fix point
- * with value null before and after a null-point. This will expand
- * the gap in its visualization and will avoid quirky connection
- * lines between points and null-points.
- */
-(function (root, factory) {
+(function (window, factory) {
   "use strict";
   if (typeof define === 'function' && define.amd) {
     define(function() {
       return factory();
     });
   } else {
-    root.stackedSeriesGapFix = factory();
+    window.stackedSeriesGapFix = factory();
   }
-}(this, function () {
+}(window, function () {
 
   var getPreFix = function(data, index) {
+    var i = index - 1;
+    if (data[i]) {
+      return {
+        x: data[i].x,
+        i: i
+      };
+    }
+    /* search for previous null-point value
     while (--index >= 0) {
       if (data[index].y !== null) {
         return {
@@ -24,10 +26,19 @@
         };
       }
     }
+    */
     return null;
   };
   
   var getPostFix = function(data, index) {
+    var i = index + 1;
+    if (data[i]) {
+      return {
+        x: data[i].x,
+        i: i
+      };
+    }
+    /* search for next null-point value
     while (++index < data.length) {
       if (data[index].y !== null) {
         return {
@@ -36,6 +47,7 @@
         };
       }
     }
+    */
     return null;
   };
   
@@ -79,13 +91,16 @@
       }
     }
       
+      // Reverse fix to start with the last (indicies!)
+      fix = fix.reverse();
+      
     // Insert generated fix points into data series
     for (var i = 0, len = fix.length; i < len; i++) {
+      if (fix[i].xPost) {
+        data.splice(fix[i].index + 1, 0, createFixPoint(fix[i].xPost - 1, fix[i].y));
+      }
       if (fix[i].xPre) {
         data.splice(fix[i].index, 0, createFixPoint(fix[i].xPre + 1, fix[i].y));
-      }
-      if (fix[i].xPost) {
-        data.splice(fix[i].index + 2, 0, createFixPoint(fix[i].xPost - 1, fix[i].y));
       }
     }
   }
