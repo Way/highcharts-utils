@@ -6,7 +6,7 @@
  * # Summary
  * 
  * Fix a given list (array) of series by optimizing the rendering of gaps
- * (null-value points) within the series in stacked area charts of [Highcharts].
+ * (null-value points) within the series in stacked area charts of [Highcharts][1].
  * 
  * ## Algorithm
  * 
@@ -25,10 +25,10 @@
  *   s2 = [2,2,x,2,2]
  * - Without fixing these series the chart will render the both series (type area, stacked)
  *   with the given data gaps (x) as they were 0 values. So there will be 2 triangles left
- *   and right from the data gab due to the fact that [Highcharts] will connect the data gap
+ *   and right from the data gab due to the fact that [Highcharts][1] will connect the data gap
  *   0 value with the previous and next data point.
  * - With fixing the series the gap will be expanded by adding two more data points with 
- *   value null to represent data gaps as well. This way [Highcharts] will connect the new
+ *   value null to represent data gaps as well. This way [Highcharts][1] will connect the new
  *   left data gap which is only 1 second behind the previous data point. The arising triangle
  *   is invisible. The same method will hide the irritiating triangle on the right side by
  *   adding the new data gap point just 1 second before the next data point. The gap will now be
@@ -42,10 +42,10 @@
  * 
  * ## Features:
  * 
- * - Designed and tested with stacked area series of [Highcharts]
+ * - Designed and tested with stacked area series of [Highcharts][1]
  * - AMD compatible
  * 
- * [Highcharts]: http://www.highcharts.com/
+ * [1]: http://www.highcharts.com/
  */
 (function (window, factory) {
   "use strict";
