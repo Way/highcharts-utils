@@ -128,41 +128,44 @@
    * @return {Object} The fixed series
    */
   var fixSeries = function(series) {
-    var fixPoints = [];
+    var fixPoints = [],
+        iSeries,
+        lenSeries,
+        data;
       
     // loop over each series
-    for (var iSeries = 0, lenSeries = series.length; iSeries < lenSeries; iSeries++) {
-        var data = series[iSeries].data;
-        series[iSeries].id = typeof series[iSeries].id !== 'undefined' ? series[iSeries].id : iSeries;
-        
-        // Collect data gaps and create fix points
-        for (var iData = 0, lenData = data.length; iData < lenData; iData++) {
-          if (data[iData].y === null) {
-            var prev = getPrev(data, iData);
-            var next = getNext(data, iData);
-            fixPoints.push({
-              id: series[iSeries].id,
-              index: iData,
-              x: data[iData].x,
-              xPrev: prev && prev.x,
-              xNext: next && next.x,
-              y: null
-            });
-              
-            if (next) {
-              // Jump to next non-fix value
-              iData = next.i;
-            }
+    for (iSeries = 0, lenSeries = series.length; iSeries < lenSeries; iSeries++) {
+      data = series[iSeries].data;
+      series[iSeries].id = typeof series[iSeries].id !== 'undefined' ? series[iSeries].id : iSeries;
+      
+      // Collect data gaps and create fix points
+      for (var iData = 0, lenData = data.length; iData < lenData; iData++) {
+        if (data[iData].y === null) {
+          var prev = getPrev(data, iData);
+          var next = getNext(data, iData);
+          fixPoints.push({
+            id: series[iSeries].id,
+            index: iData,
+            x: data[iData].x,
+            xPrev: prev && prev.x,
+            xNext: next && next.x,
+            y: null
+          });
+            
+          if (next) {
+            // Jump to next non-fix value
+            iData = next.i;
           }
         }
+      }
     }
         
     // Reverse fix to start with the last (indicies!)
     fixPoints = fixPoints.reverse();
 
     // loop over each series
-    for (var iSeries = 0, lenSeries = series.length; iSeries < lenSeries; iSeries++) {
-      var data = series[iSeries].data;
+    for (iSeries = 0, lenSeries = series.length; iSeries < lenSeries; iSeries++) {
+      data = series[iSeries].data;
       
       // Insert generated fix points into data series
       for (var iFix = 0, lenFix = fixPoints.length; iFix < lenFix; iFix++) {
