@@ -239,6 +239,7 @@
                 var prev = getPrev(data, gap.index);
                 var next = getNext(data, gap.index);
                 var isGap = data[gap.index].y === null;
+                var gapfix;
 
                 log && log.group('gap');
                 log && log.log(gap);
@@ -249,14 +250,14 @@
                 if (next) {
                     // Replace the gaps null value for series that have no gap at the given point with their value
                     var nextValue = isGap ? null : next.y;
-                    var gapfix = createGapFixPoint(next.x - fixTimeDistance, nextValue);
+                    gapfix = createGapFixPoint(next.x - fixTimeDistance, nextValue);
                     insertGapFix(data, gap.index + 1, gapfix);
                 }
 
                 if (prev) {
                     // Replace the gaps null value for series that have no gap at the given point with their value
                     var prevValue = isGap ? null : prev.y;
-                    var gapfix = createGapFixPoint(prev.x + fixTimeDistance, prevValue);
+                    gapfix = createGapFixPoint(prev.x + fixTimeDistance, prevValue);
                     insertGapFix(data, gap.index, gapfix);
                 }
                 
